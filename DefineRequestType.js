@@ -19,3 +19,8 @@ function requestType(name, handler) {
     }
   });
 }
+
+//Note Promise.resolve is used to convert
+//VALUE returned by the handler function
+// we wrapped promise by try catch block so
+// the exception raised is DIRECTLY given to the callback funtion
