@@ -76,7 +76,7 @@ requestType("gossip", (nest, message, source) => {
 //given nest matches the current set we have for it.
 requestType("connections", (nest, { name, neighbors }, source) => {
   let connections = nest.state.connections;
-  if (JSON.stringify(connections.get(name)) === JSON.stringify(neighbors))
+  if (JSON.stringify(connections.get(name)) == JSON.stringify(neighbors))
     return;
   connections.set(name, neighbors);
   broadCastConnections(name, neighbors, source);
@@ -97,3 +97,24 @@ everywhere((nest) => {
   nest.state.connections.set(nest.name, nest.neighbors);
   broadCastConnections(nest, nest.name);
 });
+
+//create a function to find a route
+// Searches for a way to reach a given node in the network.
+//But instead of returning the whole route, it just
+//returns the next step.That next nest will itself, using
+//its current information about the network, decide where
+//it sends the message.
+
+function findRoute(from, to, connections) {
+  let work = [{ at: from, via: null }];
+  for (let i = 0; i < work.length; i++) {
+    let { at, via } = work[i];
+    for (let next of connections.get(at || [])) {
+      if (next == to) return via;
+      if (!work.some((w) => w.at == next)) {
+        work.push({ at: next, via: via || next });
+      }
+    }
+  }
+  return null;
+}
