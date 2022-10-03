@@ -1,4 +1,4 @@
-import { defineRequestType } from "./crow-tech";
+import { bigOak, defineRequestType } from "./crow-tech";
 import { everywhere } from "./crow-tech";
 
 defineRequestType("note", (nest, content, source, done) => {
@@ -132,3 +132,6 @@ function requestRoute(nest, target, type, content) {
 requestType("route", (nest, { target, type, content }) => {
   return requestRoute(nest, via, "route", { target, type, content });
 });
+
+//we can now send message to the Church tower.
+requestRoute(bigOak, "Church Tower", "note", "Incoming jackdaws!");
