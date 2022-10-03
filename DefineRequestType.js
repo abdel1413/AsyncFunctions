@@ -128,3 +128,7 @@ function requestRoute(nest, target, type, content) {
     return request(nest, via, "route", { target, type, content });
   }
 }
+
+requestType("route", (nest, { target, type, content }) => {
+  return requestRoute(nest, via, "route", { target, type, content });
+});
