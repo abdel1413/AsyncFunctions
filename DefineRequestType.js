@@ -1,4 +1,5 @@
 import { defineRequestType } from "./crow-tech";
+import { everywhere } from "./crow-tech";
 
 defineRequestType("note", (nest, content, source, done) => {
   console.log(`${nest.name} receive note ${content} `);
@@ -48,3 +49,25 @@ function availableNeighbors(nest) {
 }
 // NOTE: filter is used to remove those elements
 //from the neighbors array whose corresponding value is false
+
+//FLOODING
+//create everwhere function which runs code on
+//every nest—to add a property to the nest’s state object
+
+everywhere((nest) => {
+  nest.state.gossip = [];
+});
+
+function sendGossip(nest, message, exceptFor = null) {
+  nest.state.gossip.push(message);
+  for (let neighbor of neighbors) {
+    if (neighbor === exceptFor) continue;
+    request(nest, neighbor, "gossip", message);
+  }
+}
+
+requestType("gossip", (nest, message, source) => {
+  if (nest.state.gossip.includes(message)) return;
+  console.log(`${nest.name} received gossip ${message} from ${source}`);
+  sendGossip(nest, message, source);
+});
