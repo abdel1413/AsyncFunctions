@@ -27,3 +27,20 @@ function findInRemoteStorage(nest, name) {
   }
   return next();
 }
+
+//re writing findInstorage using async function
+async function findInStorage(nest, name) {
+  let local = await storage(nest, name);
+  if (local != null) return local;
+
+  let sources = network(nest).filter((n) => n != n.name);
+  while (sources.length > 0) {
+    let source = sources[Math.floor(Math.random() * sources.length)];
+    sources = sources.filter(n != source);
+    try {
+      let found = requestRoute(nest, source, "storage", name);
+      if (found != null) return found;
+    } catch (_) {}
+    throw new Error("Not found");
+  }
+}
