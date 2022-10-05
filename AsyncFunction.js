@@ -1,3 +1,5 @@
+const { bigOak } = require("./crow-tech");
+
 requestType("storage", (nest, name) => storage(nest, name));
 
 function findInStorage(nest, name) {
@@ -44,3 +46,5 @@ async function findInStorage(nest, name) {
     throw new Error("Not found");
   }
 }
+
+findInStorage(bigOak, "Events on 2022-10-04");
