@@ -15,3 +15,10 @@ console.log("Wasted time until: ", Date.now() - start); // will print first
 
 // Wasted time until:  63
 //Timeout ran at  71
+
+//Even if the promise is already finishes, waiting for it will
+//cause the callback to run after the current script is finished
+// rather than right away.
+
+Promise.resolve("Done").then(console.log);
+console.log("Me run first though I came after the promise");
