@@ -1,6 +1,6 @@
-var bigOak = require("./crow-tech").bigOak;
+import bigOak from ("./crow-tech").bigOak ;
 
-var defineRequestType = require("./crow-tech").defineRequestType;
+import defineRequestType from  ("./crow-tech").defineRequestType;
 
 defineRequestType("note", (nest, content, source, done) => {
   console.log(`${nest.name} received note: ${content}`);
