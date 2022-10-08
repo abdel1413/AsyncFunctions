@@ -20,9 +20,7 @@ function Promise_All(promises) {
           results[i] = result;
           pending--;
           //check if pending is exhauted
-          if (pending === 0) {
-            resolve(results);
-          }
+          if (pending === 0) resolve(results);
         })
         .catch(reject);
     }
@@ -31,3 +29,16 @@ function Promise_All(promises) {
     }
   });
 }
+
+//create a function composed of array of promises
+function soon(value) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(value), Math.random() * 500);
+  });
+}
+
+console.log(
+  Promise_All([soon(2), soon(3), soon(5)]).then((array) => {
+    console.log("this is will return [2,3,5]", array);
+  })
+);
