@@ -33,12 +33,44 @@ function Promise_All(promises) {
 //create a function composed of array of promises
 function soon(value) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(value), Math.random() * 500);
+    setTimeout(() => resolve(value), Math.random() * 1000);
   });
 }
+
+console.log(
+  Promise_All([]).then((array) =>
+    console.log("this will print empty array:  ", array)
+  )
+);
+//this will print empty array:[]
 
 console.log(
   Promise_All([soon(2), soon(3), soon(5)]).then((array) => {
     console.log("this is will return [2,3,5]", array);
   })
 );
+//this is will return [2,3,5]" [2, 3, 5];
+
+console.log(
+  Promise_All([soon(2), soon(3), Promise.reject("X")])
+    .then((a) => console.log("we should not get there ", a))
+    .catch((er) => {
+      if (er != "X") {
+        console.log("unexpected failure", er);
+      }
+    })
+);
+//Promise {<pending>}
+
+// failing promise with Y and printing unexpected failure
+console.log(
+  Promise_All([soon(2), soon(3), Promise.reject("Y")])
+    .then((a) => console.log("we should not get there"))
+    .catch((er) => {
+      if (er != "X") {
+        console.log("unexpected failure", er);
+      }
+    })
+);
+
+//unexpected failure Y
