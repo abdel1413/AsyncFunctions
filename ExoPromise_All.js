@@ -74,3 +74,54 @@ console.log(
 );
 
 //unexpected failure Y
+
+//primosie function taking an array of all promise
+// return the resolved promises and saved in new array
+//access each element from promise and use then function
+// to save resolved result in the new array
+//need to check if we finish the loop so create
+//a tracker. when finish pass the results array
+// to the promise resolve funtion
+//if it unsuccessfull, catch the error
+
+function PromiseResult(promises) {
+  return new Promise((res, rej) => {
+    let ar = [];
+    let pending = promises.length;
+    for (let i = 0; i < promises.length; i++) {
+      promises[i]
+        .then((r) => {
+          ar[i] = r;
+          pending--;
+          if (pending === 0) {
+            res(ar);
+          }
+        })
+        .catch(rej);
+    }
+    if (pending === 0) {
+      res(ar);
+    }
+  });
+}
+
+console.log(PromiseResult([]).then((a) => console.log("empty result ", a)));
+
+function promiseArrays(value) {
+  return new Promise((res) => {
+    setTimeout(() => res(value), Math.random() * 5000);
+  });
+}
+
+let p = PromiseResult([promiseArrays(3), promiseArrays(5), promiseArrays(9)]);
+p.then((ar) => console.log(ar));
+let er = PromiseResult([
+  promiseArrays(1),
+  Promise.reject("Y"),
+  promiseArrays(4),
+]);
+er.then((a) => console.log(a)).catch((e) => {
+  if (e != "X") {
+    console.log("unexpected failure");
+  }
+});
