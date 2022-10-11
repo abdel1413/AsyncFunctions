@@ -115,6 +115,7 @@ function promiseArrays(value) {
 
 let p = PromiseResult([promiseArrays(3), promiseArrays(5), promiseArrays(9)]);
 p.then((ar) => console.log(ar));
+
 let er = PromiseResult([
   promiseArrays(1),
   Promise.reject("Y"),
